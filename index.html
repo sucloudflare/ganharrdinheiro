@@ -10,7 +10,7 @@
 <body>
     <div class="container">
         <div class="image-container">
-            <img src="./a.png" alt="Promoção" class="promo-image">
+            <img src="a.jpg" alt="Promoção" class="promo-image">
             <div class="overlay-text">Ganhe dinheiro assistindo vídeos!</div>
         </div>
         <div class="form-container">
@@ -70,17 +70,6 @@
         </div>
     </div>
 
-    <div class="container">
-        <h1>Login do Curso</h1>
-        <div id="user-info" style="display: none;"></div>
-        <div id="password-section">
-            <h2>Digite a senha </h2>
-            <input type="password" id="password-input" placeholder="Digite a senha">
-            <button class="btn" id="view-info">Usuário</button>
-        </div>
-        <button class="btn" onclick="window.history.back()">Voltar</button>
-    </div>
-
     <script>
         // Capturar o evento de envio do formulário
         document.getElementById('registration-form').addEventListener('submit', function(event) {
@@ -100,25 +89,83 @@
                 password: password
             };
 
-            // Salvar os dados no localStorage
-            localStorage.setItem('userData', JSON.stringify(userData));
+            // Carregar usuários do localStorage
+            const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
 
-            // Redirecionar para a página usuarios.html
-            window.location.href = 'usuarios.html';
+            // Verifica se o email já está cadastrado
+            const emailExists = usuarios.some(usuario => usuario.email === userData.email);
+            if (emailExists) {
+                alert('Este email já está cadastrado.');
+                return;
+            }
+
+            // Adiciona o novo usuário
+            usuarios.push(userData);
+            localStorage.setItem('usuarios', JSON.stringify(usuarios)); // Salva todos os usuários
+
+            // Limpar o formulário
+            document.getElementById('registration-form').reset();
+
+            // Chama a função para exibir os usuários
+            displayUsers();
         });
 
+        // Função para exibir os usuários cadastrados
+        function displayUsers() {
+            const userList = document.getElementById('userList');
+            const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
+            userList.innerHTML = ''; // Limpa a lista antes de exibir novamente
+
+            usuarios.forEach(usuario => {
+                const userDiv = document.createElement('div');
+                userDiv.classList.add('user-item');
+                userDiv.innerHTML = `
+                    <p><strong>Nome:</strong> ${usuario.name}</p>
+                    <p><strong>Email:</strong> ${usuario.email}</p>
+                    <p><strong>Número:</strong> ${usuario.phone}</p>
+                    <p><strong>Senha:</strong> ${usuario.password}</p>
+                    <hr>
+                `;
+                userList.appendChild(userDiv);
+            });
+        }
+
+        // Chama a função para exibir os usuários ao carregar a página
+        window.onload = function() {
+            document.getElementById('userList').style.display = 'none'; // Ocultar a lista de usuários inicialmente
+        };
+    </script>
+
+    <div class="container">
+        <h1>Usuários Cadastrados</h1>
+        <div id="userList"></div> <!-- Div para exibir a lista de usuários -->
+        <div id="user-info" style="display: none;"></div>
+        <div id="password-section">
+            <h2>Digite a senha </h2>
+            <input type="password" id="password-input" placeholder="Digite a senha">
+            <button class="btn" id="view-info">Usuário</button>
+        </div>
+        <button class="btn" onclick="window.history.back()">Voltar</button>
+    </div>
+
+    <script>
         // Função para exibir os dados do usuário
         function displayUserData() {
-            const userData = JSON.parse(localStorage.getItem('userData'));
+            const userData = JSON.parse(localStorage.getItem('usuarios')) || [];
             const userInfoDiv = document.getElementById('user-info');
-
-            if (userData) {
+            userInfoDiv.innerHTML = ''; // Limpar antes de exibir
+            if (userData.length > 0) {
                 userInfoDiv.innerHTML = `
-                    <h2>Informações do Usuário</h2>
-                    <p><strong>Nome:</strong> ${userData.name}</p>
-                    <p><strong>Email:</strong> ${userData.email}</p>
-                    <p><strong>Número:</strong> ${userData.phone}</p>
-                    <p><strong>Senha:</strong> ${userData.password}</p>
+                    <h2>Informações dos Usuários</h2>
+                    ${userData.map(usuario => `
+                        <div>
+                            <p><strong>Nome:</strong> ${usuario.name}</p>
+                            <p><strong>Email:</strong> ${usuario.email}</p>
+                            <p><strong>Número:</strong> ${usuario.phone}</p>
+                            <p><strong>Senha:</strong> ${usuario.password}</p>
+                            <hr>
+                        </div>
+                    `).join('')}
                 `;
                 userInfoDiv.style.display = 'block'; // Exibir informações
             } else {
@@ -132,65 +179,12 @@
             const correctPassword = 'Zx1952@@@@'; // Senha correta
 
             if (inputPassword === correctPassword) {
-                displayUserData(); // Exibir dados se a senha estiver correta
+                displayUsers(); // Exibir a lista de usuários se a senha estiver correta
+                document.getElementById('userList').style.display = 'block'; // Mostrar a lista de usuários
             } else {
                 alert('Senha incorreta! Tente novamente.'); // Mensagem de erro
             }
         });
-
-        // Carregar usuários do localStorage
-        const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
-
-        // Função para exibir os usuários cadastrados
-        function displayUsers() {
-            const userList = document.getElementById('userList');
-            userList.innerHTML = ''; // Limpa a lista antes de exibir novamente
-
-            usuarios.forEach(usuario => {
-                const userDiv = document.createElement('div');
-                userDiv.classList.add('user-item');
-                userDiv.innerHTML = `
-                    <p><strong>Nome:</strong> ${usuario.name}</p>
-                    <p><strong>Email:</strong> ${usuario.email}</p>
-                    <p><strong>Número:</strong> ${usuario.phone}</p>
-                    <p><strong>Senha:</strong> ${usuario.password}</p>
-                `;
-                userList.appendChild(userDiv);
-            });
-        }
-
-        // Adiciona um novo usuário ao cadastro
-        document.getElementById('userForm').onsubmit = function(event) {
-            event.preventDefault(); // Previne o envio padrão do formulário
-
-            if (usuarios.length < 50) {
-                const newUser = {
-                    name: document.getElementById('name').value,
-                    email: document.getElementById('email').value,
-                    phone: document.getElementById('phone').value,
-                    password: document.getElementById('password').value,
-                };
-
-                // Verifica se o email já está cadastrado
-                const emailExists = usuarios.some(usuario => usuario.email === newUser.email);
-                if (emailExists) {
-                    alert('Este email já está cadastrado.');
-                    return;
-                }
-
-                usuarios.push(newUser);
-                localStorage.setItem('usuarios', JSON.stringify(usuarios)); // Salva todos os usuários
-                displayUsers(); // Atualiza a lista exibida
-                
-                // Limpa os campos do formulário
-                document.getElementById('userForm').reset();
-            } else {
-                alert('Máximo de 50 usuários cadastrados alcançado.');
-            }
-        };
-
-        // Chama a função para exibir os usuários ao carregar a página
-        window.onload = displayUsers;
     </script>
 </body>
 </html>
