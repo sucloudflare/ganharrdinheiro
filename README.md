@@ -66,8 +66,18 @@ A senha padrão para visualizar os usuários é `Zx1952@@@@`.
     <button type="submit">Cadastrar</button>
 </form>
 
+
+
+
+´´´
+
+
+
+
 JavaScript para Exibir Usuários
 
+
+´´´´
 function displayUsers() {
     const userList = document.getElementById('userList');
     const usuarios = JSON.parse(localStorage.getItem('usuarios')) || [];
@@ -86,6 +96,12 @@ function displayUsers() {
         userList.appendChild(userDiv);
     });
 }
+
+´´´´
+
+
+
+
 Melhorias Futuras
 Autenticação mais segura: Implementar autenticação com criptografia para as senhas dos usuários.
 Banco de Dados: Migrar o armazenamento dos dados para um banco de dados para maior segurança e escalabilidade.
