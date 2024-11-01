@@ -36,7 +36,7 @@
 <li>Se a senha estiver correta, a lista de usuários cadastrados será exibida.</li>
 </ol>
 <h3>Senha de Acesso:</h3>
-<p>A senha padrão para visualizar os usuários é <code>Zx1952@@@@</code>.</p>
+<p>A senha padrão para visualizar os usuários é <code>Coderouter</code>.</p>
 <h2>Exemplo de Código</h2>
 <h3>Estrutura HTML para Cadastro</h3>
 <pre>
