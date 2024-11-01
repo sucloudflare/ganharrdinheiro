@@ -1,11 +1,4 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Projeto de Cadastro de Usuários - Curso Lucrativo</title>
-</head>
-<body>
+
 <h1>Projeto de Cadastro de Usuários - Curso Lucrativo</h1>
 <p>Este é um projeto de cadastro de usuários para uma página de divulgação de um curso, onde os usuários podem se inscrever gratuitamente e visualizar informações sobre o curso. Além disso, o sistema possui uma área de login que permite, mediante senha correta, visualizar todos os usuários cadastrados.</p>
 <h2>Funcionalidades</h2>
